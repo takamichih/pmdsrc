@@ -1,3 +1,3 @@
 .asm.obj:
-	jwasm $<
+	jwasm -I../common $<
 

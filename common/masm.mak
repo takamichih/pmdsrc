@@ -1,3 +1,3 @@
 .asm.obj:
-	masm $<
+	masm /i../common $<
 

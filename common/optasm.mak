@@ -1,3 +1,3 @@
 .asm.obj:
-	optasm $<;
+	optasm /i../common $<;
 
