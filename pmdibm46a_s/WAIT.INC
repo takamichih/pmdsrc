@@ -129,4 +129,3 @@ w_mmsk_push	db	?
 timervector	equ	08h		;timer.Š„‚è‚İ
 
 waittest	endp
-

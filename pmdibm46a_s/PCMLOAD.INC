@@ -1239,4 +1239,3 @@ _adpcm_wait	db	?		;ADPCM’è‹`‚Ì‘¬“x
 
 open_work	ends
 
-

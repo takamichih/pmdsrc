@@ -259,4 +259,3 @@ effon		db	?	;Œø‰Ê‰¹@”­‰¹’†
 psgefcnum	db	?	;Œø‰Ê‰¹”Ô†
 hosei_flag	db	?	;ppsdrv ‰¹—Ê/‰¹’ö•â³‚ğ‚·‚é‚©‚Ç‚¤‚©
 last_shot_data	db	?	;ÅŒã‚É”­‰¹‚³‚¹‚½PPSDRV‰¹F
-

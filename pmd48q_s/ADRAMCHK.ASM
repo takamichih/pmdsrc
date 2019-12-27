@@ -386,4 +386,3 @@ rep	cmpsb
 check_code	db	"*+=-PMD ADPCM RAM Check Data-=+*"
 check_data	db	32 dup(0)
 mmask_push	db	?
-

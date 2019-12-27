@@ -1419,4 +1419,3 @@ trans_table	dw	double_trans,left_trans
 
 ;	ü”g”table Include
 	include	tunedata.inc
-

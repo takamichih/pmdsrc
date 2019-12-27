@@ -16,4 +16,3 @@ virus_mes	db	"!警告! プログラムがウイルスに侵されている可能性があります。",13,10
 vprint_end:
 	mov	ah,9
 	int	21h
-

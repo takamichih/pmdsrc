@@ -1713,4 +1713,3 @@ _shift_def	db	?	; 1 マスター転調値
 _qdat3		db	?	; 1 q Random
 		db	?	; dummy
 part_work	ends
-

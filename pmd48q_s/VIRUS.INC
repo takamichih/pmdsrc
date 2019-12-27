@@ -21,4 +21,3 @@ vchk:	call	viruschk
 	jnc	vchk_exit
 	include	virusend.inc
 vchk_exit:
-

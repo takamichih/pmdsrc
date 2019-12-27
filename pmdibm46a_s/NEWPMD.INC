@@ -99,4 +99,3 @@ check_pmd:
 notpmd:	stc
 	ret
 
-
