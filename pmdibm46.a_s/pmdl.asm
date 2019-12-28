@@ -2828,7 +2828,9 @@ int5_fook:
 	mov	ax,cs:[TimerB_speed]
 	add	cs:[timer_clock],ax
 	pop	ax
-	jc	dword ptr cs:[int5ofs]
+	jnc	skipint5
+	jmp	dword ptr cs:[int5ofs]
+skipint5:
 	iret
 
 ;==============================================================================
@@ -4162,16 +4164,16 @@ intpop2:
 set_option:
 	lodsb
 	cmp	al,"/"
-	jz	option
+	jz	do_option
 	cmp	al,"-"
-	jz	option
+	jz	do_option
 	cmp	al," "
 	jc	so_ret
 	jz	set_option
 	jmp	usage
 so_ret:	ret
 
-option:
+do_option:
 	lodsb
 	and	al,11011111b	;è¨ï∂éöÅÑëÂï∂éö
 	push	bx

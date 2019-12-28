@@ -3471,7 +3471,7 @@ bp9:	call	lngset2
 
 	cmp	[skip_flag],0
 	jnz	bp10
-	mov	al,[length]
+	mov	al,[nlength]
 	stosb
 
 	mov	al,es:-2[di]
@@ -3788,7 +3788,7 @@ press_ret:
 	ret
 
 prs200:
-	mov	[length],al
+	mov	[nlength],al
 	ret
 ;
 restprs:
@@ -3810,7 +3810,7 @@ prs3:	dec	di
 
 ;==============================================================================
 ;	数値の読み出し（書かれていない時は１）
-;		output	bx/al/[length]
+;		output	bx/al/[nlength]
 ;==============================================================================
 lngset:
 	call	lngset2
@@ -3821,7 +3821,7 @@ lngset:
 ;==============================================================================
 ;	[si]から数値を読み出す
 ;	数字が書かれていない場合は[deflng]の値が返り、cy=1になる
-;		output	al/bx/[length]
+;		output	al/bx/[nlength]
 ;==============================================================================
 lngset2:
 	xor	bh,bh
@@ -3846,7 +3846,7 @@ lng1:	call	numget	;A=NUMBER
 
 	clc
 lnexit:	mov	al,bl
-	mov	[length],al
+	mov	[nlength],al
 lngset_ret:
 	ret
 
@@ -3913,11 +3913,11 @@ herr8:	stc
 	ret
 
 ;==============================================================================
-;	符点(.)があるかを見て、あれば[length]を1.5倍する。
+;	符点(.)があるかを見て、あれば[nlength]を1.5倍する。
 ;	符点が２個以上あっても可
-;		output	al/bl/[length]
+;		output	al/bl/[nlength]
 ;==============================================================================
-futen:	mov	al,[length]
+futen:	mov	al,[nlength]
 	xor	ah,ah
 	mov	bx,ax
 ftloop:	cmp	byte ptr [si],"."
@@ -3931,7 +3931,7 @@ ftloop:	cmp	byte ptr [si],"."
 ft0:	or	ah,ah
 	jnz	ft1	;音長 255 OVER
 	mov	bx,ax
-	mov	[length],al
+	mov	[nlength],al
 	ret
 ft1:
 	mov	[prsok],0	;圧縮不可にする
@@ -4011,11 +4011,11 @@ zenlenset:
 
 ;==============================================================================
 ;	音長から具体的な長さを得る
-;		INPUTS	-- [length] to 音長
+;		INPUTS	-- [nlength] to 音長
 ;			-- [zenlen] to 全音符の長さ
-;		OUTPUTS	-- al,[length]
+;		OUTPUTS	-- al,[nlength]
 ;==============================================================================
-lngcal:	mov	al,[length]
+lngcal:	mov	al,[nlength]
 	or	al,al
 	mov	dx,21
 	jz	error		;LENGTH=0 ... ERROR
@@ -4025,11 +4025,11 @@ lngcal:	mov	al,[length]
 
 lcl001:	mov	al,[zenlen]
 	xor	ah,ah
-	div	[length]
+	div	[nlength]
 	or	ah,ah
 	mov	dx,21
 	jnz	error		;音長が全音符の公約数でない
-	mov	[length],al
+	mov	[nlength],al
 	ret
 
 ;==============================================================================
@@ -5757,6 +5757,7 @@ fnumdat_seg	segment	para	public	'code'
 	dw      4b1h,4b3h,4b6h,4b8h,4bah,4bch,4beh,4c1h
 	dw      4c3h,4c5h,4c7h,4c9h,4cch,4ceh,4d0h,4d2h
 
+fnumdat_seg ends
 mml_seg	segment	byte	public
 
 ;==============================================================================
@@ -5827,7 +5828,7 @@ mes_pcmfile	db	"PCMFile  : $"
 
 tempo		db	0
 octarb		db	4
-length		db	0
+nlength		db	0
 zenlen		db	96
 deflng		db	4
 calflg		db	0

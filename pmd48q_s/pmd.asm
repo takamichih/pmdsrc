@@ -9895,16 +9895,16 @@ intpop2:
 set_option:
 	lodsb
 	cmp	al,"/"
-	jz	option
+	jz	do_option
 	cmp	al,"-"
-	jz	option
+	jz	do_option
 	cmp	al," "
 	jc	so_ret
 	jz	set_option
 	jmp	usage
 so_ret:	ret
 
-option:
+do_option:
 	lodsb
 	and	al,11011111b	;è¨ï∂éöÅÑëÂï∂éö
 	push	bx
