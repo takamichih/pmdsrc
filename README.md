@@ -19,7 +19,7 @@ PMD データ形式とその音楽文化の更なる発展を願って。
 改めて PMD の作者であり、またこのような形で公開してくださった KAJA さんに感謝の意を表明します。
 
 ## ビルドについて
-ビルドには、現在の所 DOS(BOX) 環境の `wmake` を使います。
+ビルドには、現在の所 DOS(BOX) 環境で `make.bat` を実行することによって行います。
 
 common/COMMON.MAK を編集することでアセンブラやリンカを変更できます。
 
@@ -50,7 +50,7 @@ May the PMD data format and its culture to strive even further.
 Thank you KAJA for developing PMD in the first place, and for generously releasing the source code of them.
 
 ## Building
-Currently building requires wmake under DOS(BOX).
+Currently building is done with `make.bat` under DOS(BOX).
 
 Which assembler and linker to use is configurable through common/COMMON.MAK.
 
