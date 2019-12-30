@@ -4,11 +4,11 @@
 ;							ver 4.8
 ;
 ;==============================================================================
-	.186
+;	.186
 
-ver		equ	"4.8p"		;version
+ver		equ	"4.8q"		;version
 vers		equ	48h
-date		equ	"1997/03/15"	;date
+date		equ	"2019/12/30"	;date
 
 ifndef	hyouka
 hyouka		equ	0		;1で評価版(save機能cut)
@@ -127,7 +127,7 @@ get_memo	equ	29
 ;==============================================================================
 
 code	segment	para	public	'code'
-	assume	cs:code,ss:stack
+	assume	cs:code,ss:stack_seg
 
 mc	proc
 
@@ -589,7 +589,7 @@ ife	efc+olddat
 	mov	[m_start],al	; 音源flag set
 endif
 
-	mov	di,2*[max_part+1]
+	mov	di,2*(max_part+1)
 	add	di,offset m_buf
 	test	[prg_flg],1
 	jz	cs_00
@@ -1196,7 +1196,7 @@ vdat_set:
 	jz	memo_write
 
 	mov	si,offset m_buf
-	add	si,2*[max_part+1]
+	add	si,2*(max_part+1)
 
 	mov	dx,di
 	sub	dx,offset m_buf
@@ -3933,6 +3933,15 @@ pe_skip:
 	mov	dx,"}"*256+8
 	jnz	error
 	call	futen_skip
+;------	ディレイスキップ処理を挿入 2019/12/28
+	cmp	byte ptr [si],","
+	jnz	olc03
+	inc	si
+	call	lngset2
+	mov	dx,"}"*256+6
+	jc	error
+	call	futen_skip
+;------	ここまで
 	jmp	olc03
 
 ;==============================================================================
@@ -4314,7 +4323,7 @@ lngrew:	cmp	[skip_flag],0
 	cmp	byte ptr [si],"."
 	jnz	not_futen_rew
 	mov	al,es:[di]
-	mov	[length],al
+	mov	[leng],al
 	jmp	futen_rew
 not_futen_rew:
 	call	lngset2
@@ -4653,7 +4662,7 @@ bp9:	call	lngset2
 ;==============================================================================
 ;	音長 DATA SET
 ;==============================================================================
-	mov	al,[length]
+	mov	al,[leng]
 	stosb
 	or	[prsok],1	;音長flagをset
 	and	[prsok],0f3h	;音長+タイ,ポルタflagをreset
@@ -5033,7 +5042,7 @@ prs1:	sub	di,3
 	jnz	prs200
 	dec	di
 	mov	es:-1[di],ah	;r&r -> rr に変更
-prs200:	mov	[length],al
+prs200:	mov	[leng],al
 	ret
 ;
 restprs:
@@ -5057,7 +5066,7 @@ prs3:	dec	di
 
 ;==============================================================================
 ;	数値の読み出し（書かれていない時は１）
-;		output	bx/al/[length]
+;		output	bx/al/[leng]
 ;==============================================================================
 lngset:
 	call	lngset2
@@ -5068,7 +5077,7 @@ lngset:
 ;==============================================================================
 ;	[si]から数値を読み出す
 ;	数字が書かれていない場合は[deflng]の値が返り、cy=1になる
-;		output	al/bx/[length]
+;		output	al/bx/[leng]
 ;==============================================================================
 lngset2:
 	lodsb
@@ -5100,7 +5109,7 @@ lng1:	call	numget	;A=NUMBER
 
 	clc
 lnexit:	mov	al,bl
-	mov	[length],al
+	mov	[leng],al
 lngset_ret:
 	ret
 
@@ -5166,11 +5175,11 @@ herr8:	stc
 	ret
 
 ;==============================================================================
-;	符点(.)があるかを見て、あれば[length]を1.5倍する。
+;	符点(.)があるかを見て、あれば[leng]を1.5倍する。
 ;	符点が２個以上あっても可
-;		output	al/bl/[length]
+;		output	al/bl/[leng]
 ;==============================================================================
-futen:	mov	al,[length]
+futen:	mov	al,[leng]
 	xor	ah,ah
 	mov	bx,ax
 ftloop:	cmp	byte ptr [si],"."
@@ -5184,7 +5193,7 @@ ftloop:	cmp	byte ptr [si],"."
 ft0:	or	ah,ah
 	jnz	ft1	;音長 255 OVER
 	mov	bx,ax
-	mov	[length],al
+	mov	[leng],al
 	clc
 	ret
 ft1:
@@ -5207,7 +5216,7 @@ ft2:	sub	ax,255
 	or	ah,ah
 	jnz	ft1		;音長 255 OVER
 	mov	bx,ax
-	mov	[length],al
+	mov	[leng],al
 	or	[prsok],2	;直前＝加工された音長
 	stc
 	ret
@@ -5324,11 +5333,11 @@ zenlenset:
 
 ;==============================================================================
 ;	音長から具体的な長さを得る
-;		INPUTS	-- [length] to 音長
+;		INPUTS	-- [leng] to 音長
 ;			-- [zenlen] to 全音符の長さ
-;		OUTPUTS	-- al,[length]
+;		OUTPUTS	-- al,[leng]
 ;==============================================================================
-lngcal:	mov	al,[length]
+lngcal:	mov	al,[leng]
 	or	al,al
 	mov	dx,21
 	jz	error		;LENGTH=0 ... ERROR
@@ -5338,11 +5347,11 @@ lngcal:	mov	al,[length]
 
 lcl001:	mov	al,[zenlen]
 	xor	ah,ah
-	div	[length]
+	div	[leng]
 	or	ah,ah
 	mov	dx,21
 	jnz	error		;音長が全音符の公約数でない
-	mov	[length],al
+	mov	[leng],al
 	ret
 
 ;==============================================================================
@@ -7780,6 +7789,8 @@ fnumdat_seg	segment	para	public	'code'
 	dw      4b1h,4b3h,4b6h,4b8h,4bah,4bch,4beh,4c1h
 	dw      4c3h,4c5h,4c7h,4c9h,4cch,4ceh,4d0h,4d2h
 
+fnumdat_seg	ends		;2019/12/28 追加
+
 mml_seg	segment	byte	public
 
 ;==============================================================================
@@ -7864,7 +7875,7 @@ tempo		db	0
 endif
 timerb		db	0
 octave		db	4
-length		db	0
+leng		db	0
 zenlen		db	96
 deflng		db	24
 deflng_k	db	24
@@ -8129,8 +8140,8 @@ v_filename	db	128 dup(?)
 voice_buf	db	8192 dup (?)
 voice_seg	ends
 
-stack		segment	stack
+stack_seg	segment	stack
 		db	1024 dup(?)
-stack		ends
+stack_seg	ends
 
 end	mc
