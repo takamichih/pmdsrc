@@ -1,5 +1,8 @@
 *.OBJ
+*.obj
 *.ERR
 *.COM
+*.com
 *.EXE
+*.exe
 *~
