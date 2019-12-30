@@ -25,7 +25,7 @@ PMD データ形式とその音楽文化の更なる発展を願って。
 
 `common/` 内のファイルを編集することでアセンブラやリンカを変更できます。
 
-全てのブランチで SLR Systems OPTASM 1.65, MS LINK 5.31.009 でビルドできます (全てのブランチで、これでビルドした結果のバイナリが変わらないような最小限のソースとなるようにしています)
+全てのブランチで SLR Systems OPTASM 1.65, OPTLINK 2.31 でビルドできます (全てのブランチで、これでビルドした結果のバイナリが変わらないような最小限のソースとなるようにしています)
 
 ## ブランチについて
 * `original`: 元のアーカイブに EOF 除去以外の変更を加えずに Makefile などを追加したもの
@@ -58,7 +58,7 @@ On `masm` branch it is possible to build using recent `ml.exe` up to 9.0 (VC2008
 
 Which assembler and linker to use is configurable through files under `common/`.
 
-All branches are buildable with SLR Systems OPTASM 1.65, MS LINK 5.31.009. (All branches should produce identical binaries when compiled with these tools)
+All branches are buildable with SLR Systems OPTASM 1.65, OPTLINK 2.31. (All branches should produce identical binaries when compiled with these tools)
 
 ## Branches
 * `original`: imported original archive contents without modification except for EOF removal, and added makefiles
